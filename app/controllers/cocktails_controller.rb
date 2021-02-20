@@ -9,28 +9,12 @@ class CocktailsController < ApplicationController
 
   def create
     @cocktail = Cocktail.new(cocktail_params)
-    if @cocktail.save
-      flash[:success] = "Cocktail successfully created"
-      redirect_to @cocktail
-    else
-      flash[:error] = "Something went wrong"
-      render 'new'
-    end
+    @cocktail.save
+    redirect_to cocktail_path(@cocktail)
   end
 
   def show
     @cocktail = Cocktail.find(params[:id])
-  end
-
-  def destroy
-    @cocktail = Cocktail.find(params[:id])
-    if @cocktail.destroy
-      flash[:success] = 'Object was successfully deleted.'
-      redirect_to cocktails_url
-    else
-      flash[:error] = 'Something went wrong'
-      redirect_to cocktails_url
-    end
   end
 
   private

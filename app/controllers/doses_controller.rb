@@ -4,27 +4,21 @@ class DosesController < ApplicationController
   end
 
   def create
-    @dose = Dose.new(dose_params)
     @cocktail = Cocktail.find(params[:cocktail_id])
+    @dose = Dose.new(dose_params)
     @dose.cocktail = @cocktail
     if @dose.save
-      flash[:success] = "Dose successfully created"
-      redirect_to @dose
+      redirect_to cocktail_path(@cocktail)
     else
-      flash[:error] = "Something went wrong"
-      render 'new'
+      render :new
     end
   end
 
   def destroy
-    @dose = Dose.find(dose_params)
-    if @dose.destroy
-      flash[:success] = 'Dose was successfully deleted.'
-      redirect_to doses_url
-    else
-      flash[:error] = 'Something went wrong'
-      redirect_to doses_url
-    end
+    @dose = Dose.find(params[:id])
+    @cocktail = @dose.cocktail
+    @dose.delete
+    redirect_to cocktail_path(@cocktail)
   end
 
   private
